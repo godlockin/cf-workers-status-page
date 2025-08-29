@@ -194,6 +194,14 @@ SECRET_DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR/WEBHOOK"
 - 确保所有依赖都在 `package.json` 中正确声明
 - 检查构建脚本配置是否正确
 
+#### 4. Assets配置错误
+**错误信息**：需要指定assets目录或相关配置错误
+
+**解决方案**：
+- 确保 `wrangler.toml` 使用新的 `[assets]` 配置而非已弃用的 `[site]` 配置
+- 验证assets目录路径正确指向构建输出目录（通常是 `./out`）
+- 移除过时的 `type = "webpack"` 和 `webpack_config` 配置项
+
 ### 常见运行问题
 
 1. **页面显示空白**
