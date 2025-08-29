@@ -1,4 +1,4 @@
-name = "cf-workers-status-page"
+name = "cf-worker-status-page"
 workers_dev = true
 account_id = ""
 compatibility_date = "2021-07-23"
