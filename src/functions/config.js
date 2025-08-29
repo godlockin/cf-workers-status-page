@@ -1,5 +1,7 @@
-// 环境变量配置管理模块
-// 替代原有的 config.yaml 文件，支持从 Cloudflare Workers 环境变量读取配置
+// 配置管理模块
+// 支持从环境变量和D1数据库读取配置，替代原有的 config.yaml 文件
+
+import { getSiteConfigFromD1, getMonitorsFromD1 } from './d1-config.js'
 
 /**
  * 解析监控配置字符串
@@ -40,7 +42,7 @@ function parseMonitors(monitorsString) {
 }
 
 /**
- * 获取配置对象
+ * 获取配置对象（同步版本，仅支持环境变量）
  * 优先从环境变量读取，如果没有则使用默认值
  */
 export function getConfig() {
@@ -71,6 +73,58 @@ export function getConfig() {
     settings,
     monitors
   }
+}
+
+/**
+ * 获取配置对象（异步版本，支持D1数据库和环境变量）
+ * 优先从D1数据库读取，如果没有则从环境变量读取，最后使用默认值
+ * @param {D1Database} db - D1数据库实例（可选）
+ * @returns {Promise<Object>} 配置对象
+ */
+export async function getConfigAsync(db = null) {
+  let settings = null;
+  let monitors = [];
+  
+  // 尝试从D1数据库读取配置
+  if (db) {
+    try {
+      settings = await getSiteConfigFromD1(db);
+      monitors = await getMonitorsFromD1(db);
+    } catch (error) {
+      console.warn('Failed to load config from D1, falling back to environment variables:', error);
+    }
+  }
+  
+  // 如果D1数据库读取失败或没有提供数据库实例，则从环境变量读取
+  if (!settings) {
+    settings = {
+      title: globalThis.SITE_TITLE || 'Status Page',
+      url: globalThis.SITE_URL || 'https://status.example.com',
+      logo: globalThis.SITE_LOGO || 'logo-192x192.png',
+      daysInHistogram: parseInt(globalThis.DAYS_IN_HISTOGRAM) || 90,
+      collectResponseTimes: (globalThis.COLLECT_RESPONSE_TIMES || 'false').toLowerCase() === 'true',
+      user_agent: globalThis.USER_AGENT || 'cf-worker-status-page',
+      
+      // 状态文本配置
+      allmonitorsOperational: globalThis.TEXT_ALL_OPERATIONAL || 'All Systems Operational',
+      notAllmonitorsOperational: globalThis.TEXT_NOT_ALL_OPERATIONAL || 'Not All Systems Operational',
+      monitorLabelOperational: globalThis.TEXT_OPERATIONAL || 'Operational',
+      monitorLabelNotOperational: globalThis.TEXT_NOT_OPERATIONAL || 'Not Operational',
+      monitorLabelNoData: globalThis.TEXT_NO_DATA || 'No data',
+      dayInHistogramNoData: globalThis.TEXT_HISTOGRAM_NO_DATA || 'No data',
+      dayInHistogramOperational: globalThis.TEXT_HISTOGRAM_OPERATIONAL || 'All good',
+      dayInHistogramNotOperational: globalThis.TEXT_HISTOGRAM_NOT_OPERATIONAL || ' incident(s)'
+    };
+  }
+  
+  if (monitors.length === 0) {
+    monitors = parseMonitors(globalThis.MONITORS_CONFIG);
+  }
+  
+  return {
+    settings,
+    monitors
+  };
 }
 
 /**

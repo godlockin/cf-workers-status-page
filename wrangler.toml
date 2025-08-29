@@ -3,18 +3,27 @@ workers_dev = true
 account_id = ""
 compatibility_date = "2025-08-29"
 send_metrics = false
+main = "index.js"
 
 [triggers]
 crons = ["*/2 * * * *"]
 
-# Static assets configuration (replaces deprecated [site] section)
+# Static assets served by the Worker
 [assets]
 directory = "./out"
+serve_single_page_app = false
 
 # KV namespace for storing monitor data
 kv_namespaces = [
   { binding = "KV_STATUS_PAGE", id = "", preview_id = "" }
 ]
+
+# D1 database for configuration and historical data
+[[d1_databases]]
+binding = "DB"
+database_name = "status-page-db"
+database_id = ""
+preview_database_id = ""
 
 # Environment variables for configuration
 [vars]

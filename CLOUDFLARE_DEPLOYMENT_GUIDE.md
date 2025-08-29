@@ -168,6 +168,24 @@ SECRET_DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR/WEBHOOK"
 2. 修改其他设置时，更新对应的环境变量
 3. 无需重新部署，配置更改会立即生效
 
+## 配置选项
+
+该项目支持两种配置方式：
+
+### 1. 环境变量配置（推荐用于简单部署）
+
+在Cloudflare Workers Dashboard中设置环境变量。详见项目根目录的 `wrangler.toml` 文件中的注释说明。
+
+### 2. D1数据库配置（推荐用于复杂场景）
+
+使用Cloudflare D1数据库存储配置，支持动态修改和历史数据存储。详细设置步骤请参考 `D1_SETUP_GUIDE.md` 文件。
+
+**D1数据库配置优势：**
+- 支持动态修改配置，无需重新部署
+- 存储监控历史数据
+- 更好的配置管理界面
+- 支持复杂的监控配置
+
 ## 故障排除
 
 ### 常见部署问题
@@ -201,6 +219,22 @@ SECRET_DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR/WEBHOOK"
 - 确保 `wrangler.toml` 使用新的 `[assets]` 配置而非已弃用的 `[site]` 配置
 - 验证assets目录路径正确指向构建输出目录（通常是 `./out`）
 - 移除过时的 `type = "webpack"` 和 `webpack_config` 配置项
+
+#### 5. 环境变量配置错误
+**错误信息**：不能将变量添加到只有静态资产的Worker
+
+**解决方案**：
+- 确保 `wrangler.toml` 中包含 `main = "index.js"`
+- 检查是否正确配置了Worker入口文件
+- 如果使用D1数据库，确保数据库配置正确
+
+#### 6. D1数据库配置问题
+**错误信息**：D1数据库配置不工作
+
+**解决方案**：
+- 检查 `wrangler.toml` 中的数据库ID是否正确
+- 确认数据库已创建并初始化（运行 `d1-setup.sql`）
+- 验证数据库绑定名称为 `DB`
 
 ### 常见运行问题
 
