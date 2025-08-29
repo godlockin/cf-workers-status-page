@@ -2,6 +2,8 @@
 
 Monitor your websites, showcase status including daily history, and get Slack notification whenever your website status changes. Using **Cloudflare Workers**, **CRON Triggers,** and **KV storage**. Check [my status page](https://status-page.eidam.dev) out! 🚀
 
+> **🆕 Environment Variable Configuration**: This project now supports full configuration via environment variables, eliminating the need for `config.yaml` files. See [Environment Variables Guide](./ENVIRONMENT_VARIABLES.md) and [Cloudflare Dashboard Deployment Guide](./CLOUDFLARE_DEPLOYMENT_GUIDE.md) for details.
+
 ![Status Page](.gitbook/assets/status_page_screenshot.png)
 
 ![Slack notifications](.gitbook/assets/slack_screenshot.png)
@@ -23,7 +25,27 @@ Also, prepare the following secrets
 
 ## Getting started
 
-You can either deploy with **Cloudflare Deploy Button** using GitHub Actions or deploy on your own.
+You can deploy this status page in multiple ways:
+
+1. **🆕 Manual Deployment via Cloudflare Dashboard** (Recommended) - Full configuration via environment variables
+2. **Cloudflare Deploy Button** - Quick deployment using GitHub Actions
+3. **Manual deployment with Wrangler CLI** - For advanced users
+
+### 🆕 Manual Deployment via Cloudflare Dashboard
+
+For the most flexible and secure deployment, use the new environment variable-based configuration:
+
+1. **Read the guides**:
+   - [📖 Cloudflare Dashboard Deployment Guide](./CLOUDFLARE_DEPLOYMENT_GUIDE.md) - Step-by-step deployment instructions
+   - [📖 Environment Variables Guide](./ENVIRONMENT_VARIABLES.md) - Complete configuration reference
+
+2. **Key benefits**:
+   - ✅ No sensitive information in your GitHub repository
+   - ✅ Easy configuration management via Cloudflare Dashboard
+   - ✅ Instant configuration updates without redeployment
+   - ✅ Support for encrypted environment variables
+
+This method allows you to keep all configuration (monitors, notifications, etc.) in Cloudflare while using GitHub only for code synchronization.
 
 ### Deploy with Cloudflare Deploy Button
 

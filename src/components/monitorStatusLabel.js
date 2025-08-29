@@ -1,4 +1,6 @@
-import config from '../../config.yaml'
+import { getConfig } from '../functions/config'
+
+const config = getConfig()
 
 const classes = {
   gray: 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200',

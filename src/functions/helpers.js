@@ -1,5 +1,8 @@
-import config from '../../config.yaml'
+import { getConfig, getNotificationConfig } from './config'
 import { useEffect, useState } from 'react'
+
+const config = getConfig()
+const notificationConfig = getNotificationConfig()
 
 const kvDataKey = 'monitors_data_v1_1'
 
@@ -56,7 +59,12 @@ export async function notifySlack(monitor, operational) {
       },
     ],
   }
-  return fetch(SECRET_SLACK_WEBHOOK_URL, {
+  if (!notificationConfig.slackWebhookUrl) {
+    console.log('Slack webhook URL not configured, skipping notification')
+    return Promise.resolve()
+  }
+  
+  return fetch(notificationConfig.slackWebhookUrl, {
     body: JSON.stringify(payload),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -72,12 +80,17 @@ export async function notifyTelegram(monitor, operational) {
     monitor.url
   }\` \\- 👀 [Status Page](${config.settings.url})`
 
+  if (!notificationConfig.telegramApiToken || !notificationConfig.telegramChatId) {
+    console.log('Telegram configuration not complete, skipping notification')
+    return Promise.resolve()
+  }
+
   const payload = new FormData()
-  payload.append('chat_id', SECRET_TELEGRAM_CHAT_ID)
+  payload.append('chat_id', notificationConfig.telegramChatId)
   payload.append('parse_mode', 'MarkdownV2')
   payload.append('text', text)
 
-  const telegramUrl = `https://api.telegram.org/bot${SECRET_TELEGRAM_API_TOKEN}/sendMessage`
+  const telegramUrl = `https://api.telegram.org/bot${notificationConfig.telegramApiToken}/sendMessage`
   return fetch(telegramUrl, {
     body: payload,
     method: 'POST',
@@ -101,7 +114,12 @@ export async function notifyDiscord(monitor, operational) {
       },
     ],
   }
-  return fetch(SECRET_DISCORD_WEBHOOK_URL, {
+  if (!notificationConfig.discordWebhookUrl) {
+    console.log('Discord webhook URL not configured, skipping notification')
+    return Promise.resolve()
+  }
+  
+  return fetch(notificationConfig.discordWebhookUrl, {
     body: JSON.stringify(payload),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

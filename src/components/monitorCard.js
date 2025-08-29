@@ -1,6 +1,8 @@
-import config from '../../config.yaml'
+import { getConfig } from '../functions/config'
 import MonitorStatusLabel from './monitorStatusLabel'
 import MonitorHistogram from './monitorHistogram'
+
+const config = getConfig()
 
 const infoIcon = (
   <svg

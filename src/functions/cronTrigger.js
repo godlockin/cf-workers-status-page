@@ -1,5 +1,4 @@
-import config from '../../config.yaml'
-
+import { getConfig } from './config'
 import {
   notifySlack,
   notifyTelegram,
@@ -8,6 +7,8 @@ import {
   setKVMonitors,
   notifyDiscord,
 } from './helpers'
+
+const config = getConfig()
 
 function getDate() {
   return new Date().toISOString().split('T')[0]
@@ -46,7 +47,7 @@ export async function processCronTrigger(event) {
       method: monitor.method || 'GET',
       redirect: monitor.followRedirect ? 'follow' : 'manual',
       headers: {
-        'User-Agent': config.settings.user_agent || 'cf-worker-status-page',
+        'User-Agent': config.settings.user_agent,
       },
     }
 

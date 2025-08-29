@@ -1,5 +1,7 @@
-import config from '../../config.yaml'
+import { getConfig } from '../functions/config'
 import { locations } from '../functions/locations'
+
+const config = getConfig()
 
 const classes = {
   green:

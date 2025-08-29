@@ -12,6 +12,30 @@ crons = ["* * * * *"]
 bucket = "out"
 entry-point = "./"
 
+# KV namespace for storing monitor data
+kv_namespaces = [
+  { binding = "KV_STATUS_PAGE", id = "", preview_id = "" }
+]
+
+# Environment variables for configuration
+[vars]
+# These will be set in Cloudflare Dashboard
+# SITE_TITLE = "Status Page"
+# SITE_URL = "https://status.example.com"
+# SITE_LOGO_URL = ""
+# SITE_DESCRIPTION = "Monitor status page"
+# HISTOGRAM_DAYS = "90"
+# COLLECT_RESPONSE_TIMES = "true"
+# USER_AGENT = "cf-workers-status-page"
+# MONITORS_CONFIG = "monitor1:Monitor 1:https://example.com:GET:200:true:true,monitor2:Monitor 2:https://api.example.com:POST:200:false:true"
+
+# Secret environment variables (set in Cloudflare Dashboard)
+# These should be set as encrypted environment variables:
+# SECRET_SLACK_WEBHOOK_URL
+# SECRET_TELEGRAM_CHAT_ID  
+# SECRET_TELEGRAM_API_TOKEN
+# SECRET_DISCORD_WEBHOOK_URL
+
 # uncomment and adjust following if you are not using GitHub Actions
 #[env.production]
 #kv-namespaces = [{binding="KV_STATUS_PAGE", id="xxxx", preview_id=""}]

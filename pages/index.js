@@ -3,7 +3,9 @@ import { useStore } from 'laco-react'
 import Head from 'flareact/head'
 
 import { getKVMonitors, useKeyPress } from '../src/functions/helpers'
-import config from '../config.yaml'
+import { getConfig } from '../src/functions/config'
+
+const config = getConfig()
 import MonitorCard from '../src/components/monitorCard'
 import MonitorFilter from '../src/components/monitorFilter'
 import MonitorStatusHeader from '../src/components/monitorStatusHeader'
