@@ -3,6 +3,8 @@
 Monitor your websites, showcase status including daily history, and get Slack notification whenever your website status changes. Using **Cloudflare Workers**, **CRON Triggers,** and **KV storage**. Check [my status page](https://status-page.eidam.dev) out! 🚀
 
 > **🆕 Environment Variable Configuration**: This project now supports full configuration via environment variables, eliminating the need for `config.yaml` files. See [Environment Variables Guide](./ENVIRONMENT_VARIABLES.md) and [Cloudflare Dashboard Deployment Guide](./CLOUDFLARE_DEPLOYMENT_GUIDE.md) for details.
+>
+> **📦 Yarn 4 Compatibility**: The project includes `.yarnrc.yml` configuration file to ensure full compatibility with Cloudflare Workers' Yarn 4 environment for seamless deployment.
 
 ![Status Page](.gitbook/assets/status_page_screenshot.png)
 

@@ -7,6 +7,10 @@
 - 拥有 Cloudflare 账户
 - 已将项目代码上传到 GitHub 仓库
 - 了解基本的 Cloudflare Workers 操作
+- 确认项目根目录包含以下关键文件：
+  - `.yarnrc.yml` - Yarn 4配置文件（用于Cloudflare部署兼容性）
+  - `package.json` - 项目依赖配置
+  - `wrangler.toml` - Cloudflare Workers配置
 
 ## 第一步：创建 Cloudflare Worker 项目
 
@@ -166,7 +170,31 @@ SECRET_DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR/WEBHOOK"
 
 ## 故障排除
 
-### 常见问题
+### 常见部署问题
+
+#### 1. 依赖安装失败
+**错误信息**：`The lockfile would have been modified by this install, which is explicitly forbidden`
+
+**解决方案**：
+- 确保项目根目录包含 `.yarnrc.yml` 文件
+- 该文件应包含 `enableImmutableInstalls: false` 配置
+- 如果问题持续，请检查 `package.json` 中的依赖版本是否兼容
+
+#### 2. React版本冲突
+**错误信息**：React版本不匹配的警告
+
+**解决方案**：
+- 确保使用React 16.13.1版本（与flareact兼容）
+- 检查 `package.json` 中的react和react-dom版本
+
+#### 3. 构建失败
+**错误信息**：PostCSS或其他构建工具找不到
+
+**解决方案**：
+- 确保所有依赖都在 `package.json` 中正确声明
+- 检查构建脚本配置是否正确
+
+### 常见运行问题
 
 1. **页面显示空白**
    - 检查 KV 命名空间是否正确绑定
