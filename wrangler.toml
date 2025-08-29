@@ -1,7 +1,7 @@
 name = "cf-worker-status-page"
 workers_dev = true
 account_id = ""
-compatibility_date = ""
+compatibility_date = "2025-08-29"
 send_metrics = false
 
 [triggers]
